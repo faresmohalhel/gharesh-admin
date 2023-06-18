@@ -91,46 +91,48 @@ export const Stats = () => {
   }, []);
 
   return (
-    <div className="stats shadow stats-vertical xl:stats-horizontal md:stats-horizontal bg-[#5AA1C2]">
+    <div
+      className="stats shadow stats-vertical xl:stats-horizontal md:stats-horizontal bg-[#5AA1C2]"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1559717642-b96cbea7bf56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80")',
+      }}
+    >
       <div className="stat">
-        <div className="stat-figure text-[#222222]">
+        <div className="stat-figure text-[#eee]">
           <MdEvent className="text-[40px]" />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">Total Events</div>
+        <div className="stat-title  text-[#eee] font-bold">Total Events</div>
         <div className="stat-value text-white">{events.length}</div>
       </div>
 
       <div className="stat">
-        <div className="stat-figure  text-[#222222]">
+        <div className="stat-figure  text-[#eee]">
           <BsFillTreeFill className="text-[40px]" />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">Total Trees</div>
+        <div className="stat-title  text-[#eee] font-bold">Total Trees</div>
         <div className="stat-value text-white">{rooms.length}</div>
       </div>
 
       <div className="stat">
-        <div className="stat-figure  text-[#222222] ">
+        <div className="stat-figure  text-[#eee] ">
           <FiUsers className="text-[40px] " />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">Total Users</div>
+        <div className="stat-title  text-[#eee] font-bold">Total Users</div>
         <div className="stat-value text-white">{users.length}</div>
       </div>
       <div className="stat">
-        <div className="stat-figure  text-[#222222] ">
+        <div className="stat-figure  text-[#eee] ">
           <FaMoneyBill className="text-[40px] " />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">
-          Total Payments
-        </div>
+        <div className="stat-title  text-[#eee] font-bold">Total Payments</div>
         <div className="stat-value text-white">{requests.length}</div>
       </div>
       <div className="stat">
-        <div className="stat-figure  text-[#222222] ">
+        <div className="stat-figure  text-[#eee] ">
           <MdEventAvailable className="text-[30px] " />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">
-          Total Finished
-        </div>
+        <div className="stat-title  text-[#eee] font-bold">Total Finished</div>
         <div className="stat-value text-white">
           {trashHotels.length + trashUsers.length}
         </div>

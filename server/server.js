@@ -27,6 +27,9 @@ const {
 const {
   getTotalUsersController,
 } = require("./controllers/getTotalUsersController");
+const {
+  updateEventController,
+} = require("./controllers/updateEventController");
 // const data_route = require('./routes/data-route')
 const app = express();
 
@@ -46,6 +49,7 @@ app.get("/total-events", getTotalEventsController);
 app.get("/deleted-events", deletedEventsController);
 app.delete("/delete-event/:name", deleteEventController);
 app.patch("/activate-event/:name", activateEventController);
+app.put("/update-event/:name", updateEventController);
 
 module.exports = {
   server: app,

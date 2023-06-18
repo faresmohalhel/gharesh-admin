@@ -2,14 +2,26 @@ import { TableOfProviders } from "./TableOfProviders";
 import { useState, useEffect, useReducer } from "react";
 import { GrRevert } from "react-icons/gr";
 
+import { Button, Modal } from "flowbite-react";
+
+import {
+  GoogleMap,
+  useLoadScript,
+  Autocomplete,
+  Marker,
+} from "@react-google-maps/api";
+
 import axios from "axios";
 import DismissableModal from "../components/Modal";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiCircleRemove, CiCircleCheck } from "react-icons/ci";
 import Swal from "sweetalert2";
+import UpdateEvent from "../Add Event Page/updateEvent";
+
 export const Hotels = () => {
   const [events, setEvents] = useState([]);
   const [reducer, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [openModal, setOpenModal] = useState("");
 
   useEffect(() => {
     axios
@@ -133,6 +145,40 @@ export const Hotels = () => {
                               <GrRevert className="text-red-500 text-[15px]" />
                             </button>
                           </div>
+                          <div
+                            className="tooltip text-white absolute top-2 right-16"
+                            data-tip="Revert"
+                          >
+                            <button
+                              onClick={() => {
+                                // handleActivate(event.name);
+                                setOpenModal("dismissible");
+                                console.log(event.name);
+                              }}
+                              className="btn bg-white hover:bg-gray-200 shadow-lg hover:shadow-xl border-none "
+                            >
+                              <GrRevert className="text-red-500 text-[15px]" />
+                            </button>
+                            <Modal
+                              dismissible
+                              show={openModal === "dismissible"}
+                              onClose={() => setOpenModal(undefined)}
+                            >
+                              <Modal.Body>
+                                <UpdateEvent queryName={event.name} />
+                              </Modal.Body>
+                            </Modal>
+                          </div>
+                          {/*  <button
+                            onClick={() => setOpenModal("dismissible")}
+                          ></button>
+                          <Modal
+                            dismissible
+                            show={openModal === "dismissible"}
+                            onClose={() => setOpenModal(undefined)}
+                          >
+                            <Modal.Body>{UpdateEvent(event.name)}</Modal.Body>
+                          </Modal> */}
                         </div>
 
                         <p className="text-sm text-gray-600 flex items-center">
