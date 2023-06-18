@@ -2,7 +2,7 @@ const { Event } = require("../model/eventSchema");
 
 const deleteEventController = async (req, res) => {
   const event = new Event();
-  console.log("made it into controller");
+  console.log("made it into delete controller");
   try {
     const response = await Event.findOneAndUpdate(
       {

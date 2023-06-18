@@ -58,7 +58,7 @@ export const TableOfProviders = () => {
         <td className="px-4 py-3">{event.treePrice}</td>
         <td className="px-4 py-3">
           {/* <img src={event.image} className="h-12 w-12 object-cover" /> */}
-          <DismissableModal image={event.image} />
+          <DismissableModal image={event.image} classes="h-12 w-12" />
         </td>
         <td className="px-4 py-3 flex items-center justify-end">
           <div

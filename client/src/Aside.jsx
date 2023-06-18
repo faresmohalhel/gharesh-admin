@@ -8,10 +8,10 @@ import { AiFillMessage } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 
 import { useEffect, useState, useReducer } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 export const Aside = (props) => {
-  const [hotels, setHotels] = useState([]);
+  // const [hotels, setHotels] = useState([]);
   const [reducer, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
 
@@ -20,19 +20,19 @@ export const Aside = (props) => {
     props.forceUpdate();
   }
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5500/admin/hotel/hotels/request")
-      .then((response) => {
-        setHotels(response.data);
-        forceUpdate();
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [reducer]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:5500/admin/hotel/hotels/request")
+  //     .then((response) => {
+  //       setHotels(response.data);
+  //       forceUpdate();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, [reducer]);
 
-  const count = hotels.length;
+  // const count = hotels.length;
 
   return (
     <aside

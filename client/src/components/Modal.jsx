@@ -9,7 +9,7 @@ export default function DismissableModal(props) {
   return (
     <>
       <button onClick={() => setOpenModal("dismissible")}>
-        <img src={props.image} className="h-12 w-12 object-cover" />
+        <img src={props.image} className={`object-cover ${props.classes}`} />
       </button>
       <Modal
         dismissible
@@ -18,7 +18,7 @@ export default function DismissableModal(props) {
       >
         {/* <Modal.Header>Terms of Service</Modal.Header> */}
         <Modal.Body>
-          <div className="space-y-6" onClick={() => setOpenModal(undefined)}>
+          <div className="space-y-6   " onClick={() => setOpenModal(undefined)}>
             <img src={props.image} />
           </div>
         </Modal.Body>
