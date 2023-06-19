@@ -58,7 +58,7 @@ export const Aside = (props) => {
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
               </svg> */}
               <SiCircle />
-              <span className="ml-3">Overview</span>
+              <span className="ml-3">Dashboard</span>
             </Link>
           </li>
           <li>
@@ -67,7 +67,7 @@ export const Aside = (props) => {
               className="flex items-center gap-2 p-2  w-full text-base font-medium text-white rounded-lg transition duration-75 group hover:bg-[#5AA1C2] hover:text-black dark:text-white dark:hover:bg-gray-700"
             >
               <SiHotelsdotcom />
-              Events
+              Active Problems
             </Link>
           </li>
           {/* <li>
@@ -103,7 +103,7 @@ export const Aside = (props) => {
               className="flex items-center gap-2 p-2  w-full text-base font-medium text-white  rounded-lg transition duration-75 group hover:bg-[#5AA1C2] hover:text-black "
             >
               <BsFillTrashFill />
-              Trash
+              Pending Problems
             </Link>
           </li>
           {/* <li>
@@ -120,21 +120,6 @@ export const Aside = (props) => {
               )}
             </Link>
           </li> */}
-          <li>
-            <Link
-              to="/add-event"
-              className="flex items-center gap-2 p-2  w-full text-base font-medium text-white  rounded-lg transition duration-75 group hover:bg-[#5AA1C2] hover:text-black "
-            >
-              <MdLocalHotel />
-              Add event
-            </Link>
-          </li>
-          <a href="/" onClick={handleLogOut}>
-            <span className="flex items-center gap-2 p-2 cursor-pointer  w-full text-base font-medium text-white  rounded-lg transition duration-75 group hover:bg-[#5AA1C2] hover:text-black ">
-              <FiLogOut />
-              Logout
-            </span>
-          </a>
         </ul>
       </div>
     </aside>

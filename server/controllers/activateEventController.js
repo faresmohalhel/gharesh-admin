@@ -1,4 +1,4 @@
-const { Event } = require("../model/eventSchema");
+const { Event } = require("../model/Stuproblem");
 
 const activateEventController = async (req, res) => {
   const event = new Event();
@@ -6,7 +6,7 @@ const activateEventController = async (req, res) => {
   try {
     const response = await Event.findOneAndUpdate(
       {
-        name: req.params.name,
+        email: req.params.email,
       },
       {
         active: true,

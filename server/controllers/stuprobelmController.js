@@ -66,8 +66,34 @@ const addproblem = async (req, res, next) => {
 
 const getproblem = async (req, res) => {
   try {
-    // Retrieve all problems from the database
-    const problems = await Problem.find();
+    // Retrieve all active problems from the database
+    const problems = await Problem.find({ active: true });
+
+    // Convert image buffers to base64 strings
+    const problemsWithImages = problems.map((problem) => {
+      const images = problem.images.map((image) => {
+        const base64String = Buffer.from(image).toString("base64");
+        return `data:image/png;base64,${base64String}`;
+      });
+
+      return {
+        ...problem._doc,
+        images,
+      };
+    });
+
+    res.status(200).json(problemsWithImages);
+  } catch (error) {
+    console.error("An error occurred while retrieving problems", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving problems" });
+  }
+};
+const getpendingproblem = async (req, res) => {
+  try {
+    // Retrieve all active problems from the database
+    const problems = await Problem.find({ active: false });
 
     // Convert image buffers to base64 strings
     const problemsWithImages = problems.map((problem) => {
@@ -104,6 +130,27 @@ const deleteproblem = async (req, res) => {
       .json({ error: "An error occurred while deleting the problem" });
   }
 };
+const activateproblem = async (req, res) => {
+  const problem = new Problem();
+  console.log("made it into controller");
+  try {
+    const response = await Problem.findOneAndUpdate(
+      {
+        email: req.params.email,
+      },
+      {
+        active: true,
+      }
+    );
+    console.log("done finding");
+    res.json(response);
+  } catch (error) {
+    console.log("get events error");
+    console.log(error);
+  }
+};
 module.exports.getproblem = getproblem;
 module.exports.addproblem = addproblem;
 module.exports.deleteproblem = deleteproblem;
+module.exports.activateproblem = activateproblem;
+module.exports.getpendingproblem = getpendingproblem;

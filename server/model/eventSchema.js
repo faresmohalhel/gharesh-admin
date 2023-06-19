@@ -39,6 +39,10 @@ const eventSchema = new Schema(
       type: Number,
       required: true,
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
     raised: {
       type: Number,
     },

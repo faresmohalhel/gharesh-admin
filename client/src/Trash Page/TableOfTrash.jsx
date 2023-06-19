@@ -1,28 +1,29 @@
-import { GrRevert } from "react-icons/gr";
-import Swal from "sweetalert2";
-import { useEffect, useState, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
+import { GrCheckmark } from "react-icons/gr";
+
 import axios from "axios";
 import DismissableModal from "../components/Modal";
-
+import { AiOutlineDelete } from "react-icons/ai";
+import Swal from "sweetalert2";
 export const TableOfTrash = () => {
   const [events, setEvents] = useState([]);
   const [reducer, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/deleted-events")
+      .get("http://localhost:5500/getpendingprobelm")
       .then((response) => {
         setEvents(response.data);
-        forceUpdate();
+        console.log(response);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [reducer]);
 
-  const handleActivate = (name) => {
+  const handleDelete = (email) => {
     Swal.fire({
-      title: ` Do you want to retrev ${name}?  `,
+      title: ` do you want to remove ${email}?  `,
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: "OK",
@@ -31,10 +32,10 @@ export const TableOfTrash = () => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire(` ${name} has been retreved `, "", "success");
+        Swal.fire(` ${email} has been removed `, "", "success");
 
         axios
-          .patch("http://localhost:5500/activate-event/" + name)
+          .delete("http://localhost:5500/deleteproblem/" + email)
           .then((response) => {
             console.log(response.data);
           })
@@ -43,201 +44,179 @@ export const TableOfTrash = () => {
       } else Swal.fire(" Cancelled", "", "error");
     });
   };
-
-  const tableRowsHotels = events.map((event) => {
-    return (
-      <tr key={event._id} className="border-b dark:border-gray-700">
-        <th
-          scope="row"
-          className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          {event.name}
-        </th>
-        <td className="px-4 py-3">{event.description}</td>
-        <td className="px-4 py-3">{event.locationName}</td>
-        <td className="px-4 py-3">{event.numberOfTrees}</td>
-        <td className="px-4 py-3">{event.treePrice}</td>
-        <td className="px-4 py-3">
-          <DismissableModal image={event.image} classes="h-12 w-12" />
-        </td>
-        <td className="px-4 py-3 flex items-center justify-end">
-          <div
-            id=""
-            className="bg-white  rounded divide-y divide-gray-100 shadow "
-          >
-            <div className="tooltip  text-white" data-tip="Revert">
-              <button
-                onClick={() => handleActivate(event.name)}
-                className="btn bg-white hover:bg-gray-200 shadow-lg hover:shadow-xl border-none "
-              >
-                <GrRevert className="text-red-500 text-[15px]" />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    );
-  });
-
-  //------------------------------------------------------------------------------
-  const [users, setUsers] = useState([]);
-  //   const [reducer, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  useEffect(() => {
+  const handleAccepted = (email) => {
     axios
-      .get("http://localhost:5500/deleted-users")
+      .put("http://localhost:5500/activateproblem/" + email)
       .then((response) => {
-        setUsers(response.data);
-        forceUpdate();
+        console.log(response.data);
       })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-  const handleRetreived = (email) => {
-    console.log(email);
+      .catch((error) => console.log(error.message));
     Swal.fire({
-      title: ` do you want to return ${email}?  `,
+      position: "center",
+      icon: "success",
+      title: "Accepted Successfully ",
+      showConfirmButton: false,
+      timer: 1800,
+    });
+    // forceUpdate();
+  };
+
+  const handleRejected = (id, name) => {
+    console.log(id);
+    Swal.fire({
+      title: `Are you sure to reject ${name}?  `,
       showConfirmButton: true,
       showCancelButton: true,
-      confirmButtonText: "OK",
+      confirmButtonText: "Reject",
       cancelButtonText: "Cancel",
       icon: "warning",
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire(` ${email} has been retreived `, "", "success");
+        Swal.fire(` ${name} has been rejected `, "", "success");
 
         axios
-          .patch("http://localhost:5500/activate-user/" + email)
+          .put("http://localhost:5500/admin/hotel/hotels/request/reject/" + id)
           .then((response) => {
             console.log(response.data);
           })
           .catch((error) => console.log(error.message));
-        forceUpdate();
+        // forceUpdate();
       } else Swal.fire(" Cancelled", "", "error");
     });
   };
-
-  const tableRowsUsers = users.map((user) => {
-    return (
-      <tr key={user._id} className="border-b dark:border-gray-700">
-        <th
-          scope="row"
-          className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          {user.name}
-        </th>
-        <td className="px-4 py-3">{user.email}</td>
-        <td className="px-4 py-3">{user.password}</td>
-        <td className="px-4 py-3">{user.phoneNumber}</td>
-        <td className="px-4 py-3">{user.role}</td>
-        <td className="px-4 py-3">{user.active ? "✔" : "❌"}</td>
-
-        <td className="px-4 py-3 flex items-center justify-end">
-          <div id="" className="bg-white flex gap-2 rounded ">
-            <div className="tooltip  text-white" data-tip="Retrev">
-              <button
-                onClick={() => handleRetreived(user.email)}
-                className="btn bg-white hover:bg-gray-200 shadow-lg hover:shadow-xl border-none "
-              >
-                <GrRevert className="text-red-500 text-[15px]" />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    );
-  });
   return (
-    <section className="w-full  mt-9 ">
-      <div className="mb-8">
-        {/* Start coding here */}
-        <h1 className="text-[30px] font-bold py-3">Deleted Events</h1>
-        <div className="bg-white  relative shadow-md sm:rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full  text-sm text-left text-gray-500 table-zebra ">
-              <thead className="text-xs text-white uppercase bg-[#222] dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-4 py-3">
-                    Event Name
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Description{" "}
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Max Volunteers
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Trees
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Tree Price
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Img
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    <span className="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableRowsHotels.length === 0 ? (
-                  <div className="p-3 text-lg">There Are No Deleted Events</div>
-                ) : (
-                  tableRowsHotels
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    <>
+      {events.map((event) => {
+        return (
+          <main className="p-4 px-8  md:ml-64 h-auto mt-8 ">
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 mb-4 w-full lg:w-1/2">
+              <h1 className="text-[30px] font-bold py-3">{event.fullname}</h1>
 
-      <div className="mb-8">
-        <h1 className="text-[30px] font-bold py-3">Deleted Users</h1>
-        {/* Start coding here */}
-        <div className="bg-white  relative shadow-md sm:rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-zebra">
-              <thead className="text-xs text-white uppercase bg-[#222] dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-4 py-3">
-                    User Name
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Email
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Password
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Phone Number
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Role
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Active
-                  </th>
+              <div className="p-10 ">
+                <div className="p-10 ">
+                  <div className="w-full lg:max-w-full lg:flex h-full">
+                    <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                      <div className="mb-8">
+                        <div className="flex  items-center justify-center">
+                          <div
+                            className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-40 mr-4 rounded-2xl"
+                            title="Mountain"
+                          >
+                            <DismissableModal
+                              image={event.images[0]}
+                              classes="h-100 "
+                            />
+                          </div>
+                          <div
+                            className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-40 mr-4 rounded-md "
+                            title="Mountain"
+                          >
+                            <DismissableModal
+                              image={event.images[1]}
+                              classes="h-100 border-radius: 0.75rem"
+                            />
+                          </div>
+                          <div
+                            className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-40 rounded-2xl"
+                            title="Mountain"
+                          >
+                            <DismissableModal
+                              image={event.images[2]}
+                              classes="h-100"
+                            />
+                          </div>
+                        </div>
+                        <div className="relative space-x-3">
+                          <div
+                            id=""
+                            className="bg-white rounded divide-y divide-gray-100 shadow absolute right-2 top-2"
+                          >
+                            <div
+                              className="tooltip tooltip-error text-white"
+                              data-tip="Delete"
+                            >
+                              <button
+                                onClick={() => handleDelete(event.email)}
+                                className="btn bg-white hover:bg-red-200 shadow-lg hover:shadow-xl border-none "
+                              >
+                                <AiOutlineDelete className="text-red-500 text-[15px]" />
+                              </button>
+                            </div>
+                          </div>
+                          <div
+                            className="tooltip text-white absolute top-2 right-16"
+                            data-tip="Revert"
+                          >
+                            <button
+                              onClick={() => handleAccepted(event.email)}
+                              className="btn bg-white hover:bg-gray-200 shadow-lg hover:shadow-xl border-none "
+                            >
+                              <GrCheckmark className="text-red-500 text-[15px]" />
+                            </button>
+                          </div>
+                        </div>
 
-                  <th scope="col" className="px-4 py-3">
-                    <span className="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableRowsUsers.length === 0 ? (
-                  <div className="p-3 text-lg">There are no deleted users</div>
-                ) : (
-                  tableRowsUsers
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
+                        <p className="text-sm text-gray-600 flex items-center">
+                          {event.fullname}
+                        </p>
+                        <div className="text-gray-900 font-bold text-xl mb-2">
+                          {event.email}
+                        </div>
+                        <p className="text-gray-700 text-base">
+                          {event.phoneNumber}
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="text-sm flex">
+                          <div className="flex flex-col w-28">
+                            <span className="font-bold text-gray-900">
+                              Start Date
+                            </span>
+                            <span>
+                              {
+                                new Date(event.dateOfBirth)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
+                            </span>
+                          </div>
+                          <div className="flex flex-col w-28">
+                            <span>city</span>
+                            <span>{event.city}</span>
+                          </div>
+                          <div className="flex flex-col w-28">
+                            <span>GPA</span>
+                            <span>{event.gpa}</span>
+                          </div>
+                          <div className="flex flex-col w-28 mr-2">
+                            <span>programs</span>
+                            <span>{event.program}</span>
+                          </div>
+                          <div className="flex flex-col w-28">
+                            <span>program description</span>
+                            <span>{event.problemDescription}</span>
+                          </div>
+                          <div className="flex flex-col w-28">
+                            <span>Amount</span>
+                            <span>{event.amount}</span>
+                          </div>
+                          <div className="flex flex-col w-28">
+                            <span>raised</span>
+                            <span className="overflow-scroll">
+                              {event.raised}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        );
+      })}
+    </>
   );
 };

@@ -5,7 +5,7 @@ const getEventsController = async (req, res) => {
   console.log("made it into controller");
 
   try {
-    const response = await Event.find();
+    const response = await Event.find({ active: false });
     console.log("event done event sending");
     res.json(response);
   } catch (error) {

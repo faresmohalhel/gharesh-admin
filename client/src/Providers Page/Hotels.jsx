@@ -1,6 +1,6 @@
 import { TableOfProviders } from "./TableOfProviders";
 import { useState, useEffect, useReducer } from "react";
-import { GrRevert } from "react-icons/gr";
+import { GrCheckmark } from "react-icons/gr";
 
 import axios from "axios";
 import DismissableModal from "../components/Modal";
@@ -13,7 +13,7 @@ export const Hotels = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/getproblem")
+      .get("http://localhost:5500/getactiveprobelm")
       .then((response) => {
         setEvents(response.data);
         console.log(response);
@@ -23,9 +23,9 @@ export const Hotels = () => {
       });
   }, [reducer]);
 
-  const handleDelete = (name) => {
+  const handleDelete = (email) => {
     Swal.fire({
-      title: ` do you want to remove ${name}?  `,
+      title: ` do you want to remove ${email}?  `,
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: "OK",
@@ -34,21 +34,21 @@ export const Hotels = () => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire(` ${name} has been removed `, "", "success");
+        Swal.fire(` ${email} has been removed `, "", "success");
 
         axios
-          .delete("http://localhost:5500/delete-event/" + name)
+          .delete("http://localhost:5500/deleteproblem/" + email)
           .then((response) => {
             console.log(response.data);
           })
           .catch((error) => console.log(error.message));
-        // forceUpdate();
+        forceUpdate();
       } else Swal.fire(" Cancelled", "", "error");
     });
   };
-  const handleAccepted = (id) => {
+  const handleAccepted = (email) => {
     axios
-      .put("http://localhost:5500/admin/hotel/hotels/request/accept/" + id)
+      .put("http://localhost:5500/activateproblem/" + email)
       .then((response) => {
         console.log(response.data);
       })
@@ -56,161 +56,132 @@ export const Hotels = () => {
     Swal.fire({
       position: "center",
       icon: "success",
-      title: "Added Successfully ",
+      title: "Accepted Successfully ",
       showConfirmButton: false,
       timer: 1800,
     });
     // forceUpdate();
   };
 
-  const handleRejected = (id, name) => {
-    console.log(id);
-    Swal.fire({
-      title: `Are you sure to reject ${name}?  `,
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Reject",
-      cancelButtonText: "Cancel",
-      icon: "warning",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Swal.fire(` ${name} has been rejected `, "", "success");
-
-        axios
-          .put("http://localhost:5500/admin/hotel/hotels/request/reject/" + id)
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => console.log(error.message));
-        // forceUpdate();
-      } else Swal.fire(" Cancelled", "", "error");
-    });
-  };
   return (
     <>
       {events.map((event) => {
         return (
           <main className="p-4 px-8  md:ml-64 h-auto pt-20 mt-8 ">
             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 mb-4 w-full lg:w-1/2">
-              <div>
-                <div className="p-10">
-                  {/*Card 1*/}
-                  <div className="w-full lg:max-w-full lg:flex h-full">
-                    <div
-                      className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-full"
-                      title="Mountain"
-                    >
-                      <DismissableModal image={event.image} classes="h-full" />
-                    </div>
-                    <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                      <div className="mb-8">
-                        <div className="relative space-x-3">
+              <h1 className="text-[30px] font-bold py-3">{event.fullname}</h1>
+              <div className="p-10 ">
+                <div className="w-full lg:max-w-full lg:flex h-full">
+                  <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                    <div className="mb-8">
+                      <div className="flex  items-center justify-center">
+                        <div
+                          className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-40 mr-4 rounded-2xl"
+                          title="Mountain"
+                        >
+                          <DismissableModal
+                            image={event.images[0]}
+                            classes="h-100 "
+                          />
+                        </div>
+                        <div
+                          className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-40 mr-4 rounded-md "
+                          title="Mountain"
+                        >
+                          <DismissableModal
+                            image={event.images[1]}
+                            classes="h-100 border-radius: 0.75rem"
+                          />
+                        </div>
+                        <div
+                          className="lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden h-40 rounded-2xl"
+                          title="Mountain"
+                        >
+                          <DismissableModal
+                            image={event.images[2]}
+                            classes="h-100"
+                          />
+                        </div>
+                      </div>
+                      <div className="relative space-x-3">
+                        <div
+                          id=""
+                          className="bg-white rounded divide-y divide-gray-100 shadow absolute right-2 top-2"
+                        >
                           <div
-                            id=""
-                            className="bg-white rounded divide-y divide-gray-100 shadow absolute right-2 top-2"
-                          >
-                            <div
-                              className="tooltip tooltip-error text-white"
-                              data-tip="Delete"
-                            >
-                              <button
-                                onClick={() => handleDelete(event.name)}
-                                className="btn bg-white hover:bg-red-200 shadow-lg hover:shadow-xl border-none "
-                              >
-                                <AiOutlineDelete className="text-red-500 text-[15px]" />
-                              </button>
-                            </div>
-                          </div>
-                          <div
-                            className="tooltip text-white absolute top-2 right-16"
-                            data-tip="Revert"
+                            className="tooltip tooltip-error text-white"
+                            data-tip="Delete"
                           >
                             <button
-                              onClick={() => handleActivate(event.name)}
-                              className="btn bg-white hover:bg-gray-200 shadow-lg hover:shadow-xl border-none "
+                              onClick={() => handleDelete(event.email)}
+                              className="btn bg-white hover:bg-red-200 shadow-lg hover:shadow-xl border-none "
                             >
-                              <GrRevert className="text-red-500 text-[15px]" />
+                              <AiOutlineDelete className="text-red-500 text-[15px]" />
                             </button>
                           </div>
                         </div>
-
-                        <p className="text-sm text-gray-600 flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
+                        {/* <div
+                          className="tooltip text-white absolute top-2 right-16"
+                          data-tip="Revert"
+                        >
+                          <button
+                            onClick={() => handleAccepted(event.email)}
+                            className="btn bg-white hover:bg-gray-200 shadow-lg hover:shadow-xl border-none "
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                            />
-                          </svg>
-
-                          {event.locationName}
-                        </p>
-                        <div className="text-gray-900 font-bold text-xl mb-2">
-                          {event.name}
-                        </div>
-                        <p className="text-gray-700 text-base">
-                          {event.description}
-                        </p>
+                            <GrCheckmark className="text-red-500 text-[15px]" />
+                          </button>
+                        </div> */}
                       </div>
-                      <div className="flex items-center">
-                        <div className="text-sm flex">
-                          <div className="flex flex-col w-28">
-                            <span className="font-bold text-gray-900">
-                              Start Date
-                            </span>
-                            <span>
-                              {
-                                new Date(event.startDate)
-                                  .toISOString()
-                                  .split("T")[0]
-                              }
-                            </span>
-                          </div>
-                          <div className="flex flex-col w-28">
-                            <span>Event Length</span>
-                            <span>{event.eventLength}</span>
-                          </div>
-                          <div className="flex flex-col w-28">
-                            <span>Max Volunteers</span>
-                            <span>{event.maxVolunteers}</span>
-                          </div>
-                          <div className="flex flex-col w-28 mr-2">
-                            <span>Number of Trees</span>
-                            <span>{event.numberOfTrees}</span>
-                          </div>
-                          <div className="flex flex-col w-28">
-                            <span>Tree Price</span>
-                            <span>{event.treePrice}</span>
-                          </div>
-                          <div className="flex flex-col w-28">
-                            <span>Donations</span>
-                            <span>{event.donations}</span>
-                          </div>
-                          <div className="flex flex-col w-28">
-                            <span>Volunteers</span>
-                            <span className="overflow-scroll">
-                              {event.volunteers.map((volunteer) => {
-                                return (
-                                  <div>
-                                    <span>{volunteer.name}</span>
-                                  </div>
-                                );
-                              })}
-                            </span>
-                          </div>
+
+                      <p className="text-sm text-gray-600 flex items-center">
+                        {event.fullname}
+                      </p>
+                      <div className="text-gray-900 font-bold text-xl mb-2">
+                        {event.email}
+                      </div>
+                      <p className="text-gray-700 text-base">
+                        {event.phoneNumber}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="text-sm flex">
+                        <div className="flex flex-col w-28">
+                          <span className="font-bold text-gray-900">
+                            Start Date
+                          </span>
+                          <span>
+                            {
+                              new Date(event.dateOfBirth)
+                                .toISOString()
+                                .split("T")[0]
+                            }
+                          </span>
+                        </div>
+                        <div className="flex flex-col w-28">
+                          <span>city</span>
+                          <span>{event.city}</span>
+                        </div>
+                        <div className="flex flex-col w-28">
+                          <span>GPA</span>
+                          <span>{event.gpa}</span>
+                        </div>
+                        <div className="flex flex-col w-28 mr-2">
+                          <span>programs</span>
+                          <span>{event.program}</span>
+                        </div>
+                        <div className="flex flex-col w-28">
+                          <span>program description</span>
+                          <span>{event.problemDescription}</span>
+                        </div>
+                        <div className="flex flex-col w-28">
+                          <span>Amount</span>
+                          <span>{event.amount}</span>
+                        </div>
+                        <div className="flex flex-col w-28">
+                          <span>raised</span>
+                          <span className="overflow-scroll">
+                            {event.raised}
+                          </span>
                         </div>
                       </div>
                     </div>

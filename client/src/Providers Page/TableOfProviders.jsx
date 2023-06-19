@@ -9,7 +9,7 @@ export const TableOfProviders = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/getprobelm")
+      .get("http://localhost:5500/getactiveprobelm")
       .then((response) => {
         setEvents(response.data);
         console.log(response);
@@ -61,7 +61,7 @@ export const TableOfProviders = () => {
         {/* <img src={event.image} className="h-12 w-12 object-cover" /> */}
         <td className="px-4 py-3">{event.amount}</td>
         <td className="px-4 py-3">{event.raised}</td>
-        <DismissableModal image={event.images} classes="h-12 w-12" />
+        <DismissableModal image={event.images[0]} classes="h-12 w-12" />
         <td className="px-4 py-3 items-center justify-end">
           <div
             id=""

@@ -35,6 +35,10 @@ const problemSchema = new Schema(
       type: String,
       required: true,
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
     amount: {
       type: Number,
       required: true,

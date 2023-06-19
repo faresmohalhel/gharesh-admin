@@ -14,7 +14,7 @@ export const Stats = () => {
   // get total of events
   useEffect(() => {
     axios
-      .get("http://localhost:5500/getprobelm")
+      .get("http://localhost:5500/getactiveprobelm")
       .then((response) => {
         setEvents(response.data);
       })
@@ -54,7 +54,7 @@ export const Stats = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/getprobelm")
+      .get("http://localhost:5500/getpendingprobelm")
       .then((response) => {
         setRequests(response.data);
       })
@@ -113,7 +113,9 @@ export const Stats = () => {
         <div className="stat-figure  text-[#222222] ">
           <FaMoneyBill className="text-[40px] " />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">Total Doners</div>
+        <div className="stat-title  text-[#222222] font-bold">
+          Pending Problems
+        </div>
         <div className="stat-value text-white">{requests.length}</div>
       </div>
       <div className="stat">

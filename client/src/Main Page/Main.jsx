@@ -25,10 +25,6 @@ export const Main = () => {
       {/* <div className="grid grid-cols-1 gap-4">
         <TableOfRequests />
       </div> */}
-
-      <div className="grid grid-cols-1 gap-4">
-        <TableOfTrash />
-      </div>
     </main>
   );
 };

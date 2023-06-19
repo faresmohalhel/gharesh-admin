@@ -34,7 +34,7 @@ const MessageCard = () => {
     }).then((data) => {
       if (data.isConfirmed) {
         axios
-          .put(`http://localhost:5500/contact/${id}`)
+          .delete(`http://localhost:5500/contact/${id}`)
           .then(function (response) {
             // Update the messages list after successful deletion
             setMessages(messages.filter((messages) => messages.id !== id));
@@ -54,18 +54,18 @@ const MessageCard = () => {
         <div className="grid   lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1  gap-4 content-center justify-center">
           {messages.map((message) => (
             <div
-              key={message.id}
+              key={message.name}
               className="max-w-sm p-6 ms-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                subject: {message.subjectcontact}
+                subject: {message.email}
               </h5>
               <h6 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Email: {message.emailcontact}
+                Email: {message.phone}
               </h6>
 
               <p className="mb-3 font-normal overflow-auto text-gray-700 dark:text-gray-400 ">
-                Message: {message.messagescontact}
+                Message: {message.message}
               </p>
               <div className="flex justify-center content-center">
                 <a

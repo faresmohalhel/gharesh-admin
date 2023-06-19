@@ -6,7 +6,15 @@ const { getUsersController } = require("./controllers/getUsersController");
 const { deleteUserController } = require("./controllers/deleteUserController");
 const { addEventController } = require("./controllers/addEventController");
 const { getEventsController } = require("./controllers/getEventsController");
-const { getproblem } = require("./controllers/stuprobelmController");
+const { getContact } = require("./controllers/contactController");
+const { getabout } = require("./controllers/aboutController");
+// const { editabout } = require("./controllers/aboutController");
+
+const {
+  getproblem,
+  getpendingproblem,
+} = require("./controllers/stuprobelmController");
+const { activateproblem } = require("./controllers/stuprobelmController");
 const {
   activateEventController,
 } = require("./controllers/activateEventController");
@@ -41,7 +49,12 @@ app.patch("/activate-user/:email", activateUserController);
 
 app.post("/add-event", addEventController);
 app.get("/events", getEventsController);
-app.get("/getprobelm", getproblem);
+app.get("/getabout"), getabout;
+// app.post("/editaboutus"), editabout;
+app.get("/contact", getContact);
+app.get("/getactiveprobelm", getproblem);
+app.get("/getpendingprobelm", getpendingproblem);
+app.put("/activateproblem/:email", activateproblem);
 app.get("/total-events", getTotalEventsController);
 app.get("/deleted-events", deletedEventsController);
 app.delete("/deleteproblem/:email", deleteproblem);
