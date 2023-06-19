@@ -13,7 +13,7 @@ export const Hotels = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/events")
+      .get("http://localhost:5500/getproblem")
       .then((response) => {
         setEvents(response.data);
         console.log(response);

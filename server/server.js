@@ -6,12 +6,11 @@ const { getUsersController } = require("./controllers/getUsersController");
 const { deleteUserController } = require("./controllers/deleteUserController");
 const { addEventController } = require("./controllers/addEventController");
 const { getEventsController } = require("./controllers/getEventsController");
+const { getproblem } = require("./controllers/stuprobelmController");
 const {
   activateEventController,
 } = require("./controllers/activateEventController");
-const {
-  deleteEventController,
-} = require("./controllers/deleteEventController");
+const { deleteproblem } = require("./controllers/stuprobelmController");
 const {
   deletedUsersController,
 } = require("./controllers/deletedUsersController");
@@ -42,9 +41,10 @@ app.patch("/activate-user/:email", activateUserController);
 
 app.post("/add-event", addEventController);
 app.get("/events", getEventsController);
+app.get("/getprobelm", getproblem);
 app.get("/total-events", getTotalEventsController);
 app.get("/deleted-events", deletedEventsController);
-app.delete("/delete-event/:name", deleteEventController);
+app.delete("/deleteproblem/:email", deleteproblem);
 app.patch("/activate-event/:name", activateEventController);
 
 module.exports = {

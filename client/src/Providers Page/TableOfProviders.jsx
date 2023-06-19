@@ -9,7 +9,7 @@ export const TableOfProviders = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/events")
+      .get("http://localhost:5500/getprobelm")
       .then((response) => {
         setEvents(response.data);
         console.log(response);
@@ -19,9 +19,9 @@ export const TableOfProviders = () => {
       });
   }, [reducer]);
 
-  const handleDelete = (name) => {
+  const handleDelete = (email) => {
     Swal.fire({
-      title: ` do you want to remove ${name}?  `,
+      title: ` do you want to remove ${email}?  `,
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: "OK",
@@ -30,10 +30,10 @@ export const TableOfProviders = () => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire(` ${name} has been removed `, "", "success");
+        Swal.fire(` ${email} has been removed `, "", "success");
 
         axios
-          .delete("http://localhost:5500/delete-event/" + name)
+          .delete("http://localhost:5500/deleteproblem/" + email)
           .then((response) => {
             console.log(response.data);
           })
@@ -50,24 +50,26 @@ export const TableOfProviders = () => {
           scope="row"
           className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
-          {event.name}
+          {event.fullname}
         </th>
-        <td className="px-4 py-3">{event.description}</td>
-        <td className="px-4 py-3">{event.maxVolunteers}</td>
-        <td className="px-4 py-3">{event.numberOfTrees}</td>
-        <td className="px-4 py-3">{event.treePrice}</td>
-        <td className="px-4 py-3">
-          {/* <img src={event.image} className="h-12 w-12 object-cover" /> */}
-          <DismissableModal image={event.image} classes="h-12 w-12" />
-        </td>
-        <td className="px-4 py-3 flex items-center justify-end">
+        <td className="px-4 py-3">{event.email}</td>
+        <td className="px-4 py-3">{event.phoneNumber}</td>
+        <td className="px-4 py-3">{event.dateOfBirth}</td>
+        <td className="px-4 py-3">{event.gpa}</td>
+        <td className="px-4 py-3">{event.city}</td>
+
+        {/* <img src={event.image} className="h-12 w-12 object-cover" /> */}
+        <td className="px-4 py-3">{event.amount}</td>
+        <td className="px-4 py-3">{event.raised}</td>
+        <DismissableModal image={event.images} classes="h-12 w-12" />
+        <td className="px-4 py-3 items-center justify-end">
           <div
             id=""
             className="bg-white  rounded divide-y divide-gray-100 shadow "
           >
             <div className="tooltip tooltip-error text-white" data-tip="Delete">
               <button
-                onClick={() => handleDelete(event.name)}
+                onClick={() => handleDelete(event.email)}
                 className="btn bg-white hover:bg-red-200 shadow-lg hover:shadow-xl border-none "
               >
                 <AiOutlineDelete className="text-red-500 text-[15px]" />
@@ -83,29 +85,38 @@ export const TableOfProviders = () => {
     <section className="w-full  mt-5 ">
       <div className="">
         {/* Start coding here */}
-        <h1 className="text-[30px] font-bold py-3">Events</h1>
+        <h1 className="text-[30px] font-bold py-3">Students Problems</h1>
         <div className="bg-white  relative shadow-md sm:rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full  text-sm text-left text-gray-500 table-zebra ">
               <thead className="text-xs text-white uppercase bg-[#222] dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-4 py-3">
-                    Event Name
+                    Student Name
                   </th>
                   <th scope="col" className="px-4 py-3">
-                    Description{" "}
+                    Email{" "}
                   </th>
                   <th scope="col" className="px-4 py-3">
-                    Max Volunteers
+                    Phone Number
                   </th>
                   <th scope="col" className="px-4 py-3">
-                    Trees
+                    Date of Birth
                   </th>
                   <th scope="col" className="px-4 py-3">
-                    Tree Price
+                    Student GPA
                   </th>
                   <th scope="col" className="px-4 py-3">
-                    Img
+                    City
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Amount
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Raised
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Images
                   </th>
                   <th scope="col" className="px-4 py-3">
                     <span className="sr-only">Actions</span>

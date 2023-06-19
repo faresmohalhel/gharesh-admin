@@ -1,17 +1,12 @@
-const { Event } = require("../model/eventSchema");
+const { Problem } = require("../model/Stuproblem");
 
 const deleteEventController = async (req, res) => {
-  const event = new Event();
+  const problem = new Problem();
   console.log("made it into delete controller");
   try {
-    const response = await Event.findOneAndUpdate(
-      {
-        name: req.params.name,
-      },
-      {
-        active: false,
-      }
-    );
+    const response = await Problem.findOneAndDelete({
+      email: req.params.email,
+    });
     console.log("done finding");
     res.json(response);
   } catch (error) {

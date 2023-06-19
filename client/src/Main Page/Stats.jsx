@@ -14,7 +14,7 @@ export const Stats = () => {
   // get total of events
   useEffect(() => {
     axios
-      .get("http://localhost:5500/total-events")
+      .get("http://localhost:5500/getprobelm")
       .then((response) => {
         setEvents(response.data);
       })
@@ -49,12 +49,12 @@ export const Stats = () => {
       });
   }, []);
 
-  // total of requests
+  // total of Doantions
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/admin/hotel/hotels/request")
+      .get("http://localhost:5500/getprobelm")
       .then((response) => {
         setRequests(response.data);
       })
@@ -96,16 +96,10 @@ export const Stats = () => {
         <div className="stat-figure text-[#222222]">
           <MdEvent className="text-[40px]" />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">Total Events</div>
-        <div className="stat-value text-white">{events.length}</div>
-      </div>
-
-      <div className="stat">
-        <div className="stat-figure  text-[#222222]">
-          <BsFillTreeFill className="text-[40px]" />
+        <div className="stat-title  text-[#222222] font-bold">
+          Total Problems
         </div>
-        <div className="stat-title  text-[#222222] font-bold">Total Trees</div>
-        <div className="stat-value text-white">{rooms.length}</div>
+        <div className="stat-value text-white">{events.length}</div>
       </div>
 
       <div className="stat">
@@ -119,9 +113,7 @@ export const Stats = () => {
         <div className="stat-figure  text-[#222222] ">
           <FaMoneyBill className="text-[40px] " />
         </div>
-        <div className="stat-title  text-[#222222] font-bold">
-          Total Payments
-        </div>
+        <div className="stat-title  text-[#222222] font-bold">Total Doners</div>
         <div className="stat-value text-white">{requests.length}</div>
       </div>
       <div className="stat">

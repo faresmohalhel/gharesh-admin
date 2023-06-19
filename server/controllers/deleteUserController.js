@@ -4,10 +4,7 @@ const deleteUserController = async (req, res) => {
   const user = new User();
   console.log("made it into controller");
   try {
-    const response = await User.findOneAndUpdate(
-      { email: req.params.email },
-      { active: false }
-    );
+    const response = await User.findOneAndDelete({ email: req.params.email });
     console.log("done finding");
     res.json(response);
   } catch (error) {

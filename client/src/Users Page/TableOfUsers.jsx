@@ -5,7 +5,7 @@ import { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 
 export const TableOfUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [Users, setUsers] = useState([]);
   const [reducer, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
@@ -44,20 +44,18 @@ export const TableOfUsers = () => {
     });
   };
 
-  const tableRows = users.map((user) => {
+  const tableRows = Users.map((user) => {
     return (
       <tr key={user._id} className="border-b dark:border-gray-700">
         <th
           scope="row"
           className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
-          {user.name}
+          {user.username}
         </th>
         <td className="px-4 py-3">{user.email}</td>
         <td className="px-4 py-3">{user.password}</td>
-        <td className="px-4 py-3">{user.phoneNumber}</td>
         <td className="px-4 py-3">{user.role}</td>
-        <td className="px-4 py-3">{user.active ? "✔" : "❌"}</td>
 
         <td className="px-4 py-3 flex items-center justify-end">
           <div id="" className="bg-white flex gap-2 rounded ">
@@ -94,14 +92,9 @@ export const TableOfUsers = () => {
                   <th scope="col" className="px-4 py-3">
                     Password
                   </th>
-                  <th scope="col" className="px-4 py-3">
-                    Phone Number
-                  </th>
+
                   <th scope="col" className="px-4 py-3">
                     Role
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Active
                   </th>
 
                   <th scope="col" className="px-4 py-3">

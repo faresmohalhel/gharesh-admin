@@ -4,7 +4,7 @@ const getUsersController = async (req, res) => {
   const user = new User();
   console.log("made it into controller");
   try {
-    const response = await User.find({ active: true });
+    const response = await User.find();
     console.log("done finding");
     res.json(response);
   } catch (error) {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
-const eventSchema = new Schema(
+const problemSchema = new Schema(
   {
     fullname: {
       type: String,
@@ -54,6 +54,8 @@ const eventSchema = new Schema(
   { timestamps: true }
 );
 
-const Event = mongoose.model("Event", eventSchema);
+const Problem = mongoose.model("Problem", problemSchema);
+// const Problem2 = mongoose.model("Problem2", problemSchema);
 
-module.exports.Event = Event;
+// module.exports.Problem2 = Problem2;
+module.exports = Problem;

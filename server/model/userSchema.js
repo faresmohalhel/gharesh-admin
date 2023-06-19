@@ -1,33 +1,39 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const userSchema = new Schema(
+  {
+    firstname: {
+      type: String,
+      required: true,
+    },
+    lastname: {
+      type: String,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "a users email is required"],
-    unique: [true, "a users email must be unique"],
-  },
-  password: {
-    type: String,
-    required: [true, "a users password is required"],
-  },
-  phoneNumber: {
-    type: Number,
-  },
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  role: {
-    type: String,
-  },
-  volunteering: [{ eventName: String }],
-  payment: [{ date: String, amount: Number, eventName: String }],
-});
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 
